@@ -1,0 +1,312 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-with-sidecar
+spec:
+  volumes:
+  - name: database-volume 
+    emptyDir: {}
+  containers:
+
+  # Main application container
+  - name: database-service
+    imagePullPolicy: IfNotPresent
+    image: postgres # alpine is a simple Linux OS image
+    env:
+    - name: "POSTGRES_DB"
+      value: "postgres"
+    - name: "POSTGRES_USER"
+      value: "postgres"
+    - name: "POSTGRES_PASSWORD"
+      value: "Siemens123"
+    volumeMounts:
+    - name: database-volume
+      mountPath: /var/lib/postgresql
+    ports:
+    - containerPort: 5432
+    
+  # Sidecar container
+  - name: kpi-service
+    imagePullPolicy: IfNotPresent
+    image: kpi-image:latest 
+    ports:
+    - containerPort: 4502
+    env:
+    - name: "http_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "https_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "no_proxy"
+      value: "localhost;127.0.0.1"
+    - name: "DBSERVICETYPE"
+      value: "postgres"
+    - name: "DBSERVICE"
+      value: "EdgeDatabase"  
+    - name: "EXTENDED_ERRORS"
+      value: "true"
+    - name: "LOG_DEBUG_INFO"
+      value: "true"
+    - name: {{ .Values.env.name }}
+      value:  '{"postgres":[{"name":"EdgeDatabase","credentials":{"name":"postgres","host":"localhost","port":"5432","username":"postgres","password":"Siemens123"}}]}'
+
+  - name: asset-service
+    imagePullPolicy: IfNotPresent
+    image: asset-image:latest     
+    ports:
+    - containerPort: 4504
+    env:
+    - name: "http_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "https_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "no_proxy"
+      value: "localhost;127.0.0.1"
+    - name: "DBSERVICETYPE"
+      value: "postgres"
+    - name: "DBSERVICE"
+      value: "EdgeDatabase"  
+    - name: "EXTENDED_ERRORS"
+      value: "true"
+    - name: "LOG_DEBUG_INFO"
+      value: "true"
+    - name: {{ .Values.env.name }}
+      value:  '{"postgres":[{"name":"EdgeDatabase","credentials":{"name":"postgres","host":"localhost","port":"5432","username":"postgres","password":"Siemens123"}}]}'
+      
+  - name: data-service
+    imagePullPolicy: IfNotPresent
+    image: data-image:latest  
+    
+    ports:
+    - containerPort: 4505
+    env:
+    - name: "http_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "https_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "no_proxy"
+      value: "localhost;127.0.0.1"
+    - name: "DBSERVICETYPE"
+      value: "postgres"
+    - name: "DBSERVICE"
+      value: "EdgeDatabase"  
+    - name: "EXTENDED_ERRORS"
+      value: "true"
+    - name: "LOG_DEBUG_INFO"
+      value: "true"
+    - name: {{ .Values.env.name }}
+      value: '{"postgres":[{"name":"EdgeDatabase","credentials":{"name":"postgres","host":"localhost","port":"5432","username":"postgres","password":"Siemens123"}}]}'
+  - name: dashboard-service
+    imagePullPolicy: IfNotPresent
+    image: dashboard-image:latest  
+    
+    ports:
+    - containerPort: 4506
+    env:
+    - name: "http_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "https_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "no_proxy"
+      value: "localhost;127.0.0.1"
+    - name: "DBSERVICETYPE"
+      value: "postgres"
+    - name: "DBSERVICE"
+      value: "EdgeDatabase"  
+    - name: "EXTENDED_ERRORS"
+      value: "true"
+    - name: "LOG_DEBUG_INFO"
+      value: "true"
+    - name: {{ .Values.env.name }}
+      value: '{"postgres":[{"name":"EdgeDatabase","credentials":{"name":"postgres","host":"localhost","port":"5432","username":"postgres","password":"Siemens123"}}]}'
+
+  - name: usermanager-service
+    imagePullPolicy: IfNotPresent
+    image: usermanager-image:latest  
+    
+    ports:
+    - containerPort: 4507
+    env:
+    - name: "http_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "https_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "no_proxy"
+      value: "localhost;127.0.0.1"
+    - name: "DBSERVICETYPE"
+      value: "postgres"
+    - name: "DBSERVICE"
+      value: "EdgeDatabase"  
+    - name: "EXTENDED_ERRORS"
+      value: "true"
+    - name: "LOG_DEBUG_INFO"
+      value: "true"
+    - name: {{ .Values.env.name }}
+      value: '{"postgres":[{"name":"EdgeDatabase","credentials":{"name":"postgres","host":"localhost","port":"5432","username":"postgres","password":"Siemens123"}}]}' 
+  
+  - name: billing-service
+    imagePullPolicy: IfNotPresent
+    image: billing-image:latest  
+    
+    ports:
+    - containerPort: 4508
+    env:
+    - name: "http_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "https_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "no_proxy"
+      value: "localhost;127.0.0.1"
+    - name: "DBSERVICETYPE"
+      value: "postgres"
+    - name: "DBSERVICE"
+      value: "EdgeDatabase"  
+    - name: "EXTENDED_ERRORS"
+      value: "true"
+    - name: "LOG_DEBUG_INFO"
+      value: "true"
+    - name: {{ .Values.env.name }}
+      value: '{"postgres":[{"name":"EdgeDatabase","credentials":{"name":"postgres","host":"localhost","port":"5432","username":"postgres","password":"Siemens123"}}]}' 
+
+  - name: time-service
+    imagePullPolicy: IfNotPresent
+    image: time-image:latest  
+    
+    ports:
+    - containerPort: 4509
+    env:
+    - name: "http_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "https_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "no_proxy"
+      value: "localhost;127.0.0.1"
+    - name: "DBSERVICETYPE"
+      value: "postgres"
+    - name: "DBSERVICE"
+      value: "EdgeDatabase"  
+    - name: "EXTENDED_ERRORS"
+      value: "true"
+    - name: "LOG_DEBUG_INFO"
+      value: "true"
+    - name: {{ .Values.env.name }}
+      value: '{"postgres":[{"name":"EdgeDatabase","credentials":{"name":"postgres","host":"localhost","port":"5432","username":"postgres","password":"Siemens123"}}]}' 
+      
+  - name: test-service
+    imagePullPolicy: IfNotPresent
+    image: test-image:latest  
+    
+    ports:
+    - containerPort: 45011
+    env:
+    - name: "http_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "https_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "no_proxy"
+      value: "localhost;127.0.0.1"
+    - name: "DBSERVICETYPE"
+      value: "postgres"
+    - name: "DBSERVICE"
+      value: "EdgeDatabase"  
+    - name: "EXTENDED_ERRORS"
+      value: "true"
+    - name: "LOG_DEBUG_INFO"
+      value: "true"
+    - name: {{ .Values.env.name }}
+      value: '{"postgres":[{"name":"EdgeDatabase","credentials":{"name":"postgres","host":"localhost","port":"5432","username":"postgres","password":"Siemens123"}}]}'
+
+  - name: frontend-service
+    imagePullPolicy: IfNotPresent
+    image: frontend-image:latest  
+    
+    ports:
+    - containerPort: 4201
+    env:
+    - name: "http_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "https_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "no_proxy"
+      value: "localhost;127.0.0.1"
+    - name: "DBSERVICETYPE"
+      value: "postgres"
+    - name: "DBSERVICE"
+      value: "EdgeDatabase"  
+    - name: "EXTENDED_ERRORS"
+      value: "true"
+    - name: "LOG_DEBUG_INFO"
+      value: "true"
+    - name: {{ .Values.env.name }}
+      value: '{"postgres":[{"name":"EdgeDatabase","credentials":{"name":"postgres","host":"localhost","port":"5432","username":"postgres","password":"Siemens123"}}]}'
+
+  - name: dbinit-service
+    imagePullPolicy: IfNotPresent
+    image: dbinitapi-image:latest  
+    
+    ports:
+    - containerPort: 1337
+    env:
+    - name: "http_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "https_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "no_proxy"
+      value: "localhost;127.0.0.1"
+    - name: "DBSERVICETYPE"
+      value: "postgres"
+    - name: "DBSERVICE"
+      value: "EdgeDatabase"  
+    - name: "EXTENDED_ERRORS"
+      value: "true"
+    - name: "LOG_DEBUG_INFO"
+      value: "true"
+    - name: {{ .Values.env.name }}
+      value: '{"postgres":[{"name":"EdgeDatabase","credentials":{"name":"postgres","host":"localhost","port":"5432","username":"postgres","password":"Siemens123"}}]}'
+
+  - name: publisher-mqtt-service
+    imagePullPolicy: IfNotPresent
+    image: demo_publisher_mqtt:latest  
+    
+    ports:
+    - containerPort: 1883
+    env:
+    - name: "http_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "https_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "no_proxy"
+      value: "localhost;127.0.0.1"
+    - name: "DBSERVICETYPE"
+      value: "postgres"
+    - name: "DBSERVICE"
+      value: "EdgeDatabase"  
+    - name: "EXTENDED_ERRORS"
+      value: "true"
+    - name: "LOG_DEBUG_INFO"
+      value: "true"
+    - name: {{ .Values.env.name }}
+      value: '{"postgres":[{"name":"EdgeDatabase","credentials":{"name":"postgres","host":"localhost","port":"5432","username":"postgres","password":"Siemens123"}}]}'
+
+  - name: subscriber-service
+    imagePullPolicy: IfNotPresent
+    image: demo_subscriber:latest  
+    
+    ports:
+    - containerPort: 3000
+    env:
+    - name: "http_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "https_proxy"
+      value: 'http://194.138.0.25:9400'
+    - name: "no_proxy"
+      value: "localhost;127.0.0.1"
+    - name: "DBSERVICETYPE"
+      value: "postgres"
+    - name: "DBSERVICE"
+      value: "EdgeDatabase"  
+    - name: "EXTENDED_ERRORS"
+      value: "true"
+    - name: "LOG_DEBUG_INFO"
+      value: "true"
+    - name: {{ .Values.env.name }}
+      value: '{"postgres":[{"name":"EdgeDatabase","credentials":{"name":"postgres","host":"localhost","port":"5432","username":"postgres","password":"Siemens123"}}]}'      
