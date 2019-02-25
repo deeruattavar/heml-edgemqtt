@@ -265,10 +265,10 @@ spec:
 
   - name: publisher-mqtt-service
     imagePullPolicy: IfNotPresent
-    image: demo_publisher_mqtt:latest  
+    image: demo_publisher:latest  
     
     ports:
-    - containerPort: 1883
+    - containerPort: 3500
     env:
     - name: "http_proxy"
       value: 'http://194.138.0.25:9400'
