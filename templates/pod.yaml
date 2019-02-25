@@ -263,7 +263,7 @@ spec:
     - name: {{ .Values.env.name }}
       value: '{"postgres":[{"name":"EdgeDatabase","credentials":{"name":"postgres","host":"localhost","port":"5432","username":"postgres","password":"Siemens123"}}]}'
 
-  - name: publisher-mqtt-service
+  - name: publisher-service
     imagePullPolicy: IfNotPresent
     image: demo_publisher:latest  
     
