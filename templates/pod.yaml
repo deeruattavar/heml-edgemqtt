@@ -335,7 +335,7 @@ spec:
     - name: {{ .Values.env.name }}
       value: '{"postgres":[{"name":"EdgeDatabase","credentials":{"name":"postgres","host":"localhost","port":"5432","username":"postgres","password":"Siemens123"}}]}' 
 
-  - name: edgedbconfigUI-service
+  - name: edgedbconfigui-service
     imagePullPolicy: IfNotPresent
     image: edgedb-ui:latest   
     
