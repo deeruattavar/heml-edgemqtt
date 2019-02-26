@@ -263,12 +263,12 @@ spec:
     - name: {{ .Values.env.name }}
       value: '{"postgres":[{"name":"EdgeDatabase","credentials":{"name":"postgres","host":"localhost","port":"5432","username":"postgres","password":"Siemens123"}}]}'
 
-  - name: publisher-mqtt-service
+  - name: publisher-service
     imagePullPolicy: IfNotPresent
-    image: demo_publisher_mqtt:latest  
+    image: demo_publisher:latest  
     
     ports:
-    - containerPort: 1883
+    - containerPort: 3500
     env:
     - name: "http_proxy"
       value: 'http://194.138.0.25:9400'
