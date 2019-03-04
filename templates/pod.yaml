@@ -5,6 +5,7 @@ metadata:
 spec:
   volumes:
   - name: database-volume 
+  - name: myvolume
     emptyDir: {}
   containers:
 
