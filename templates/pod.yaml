@@ -313,10 +313,14 @@ spec:
   
   - name: mqtt-service
     imagePullPolicy: IfNotPresent
-    image: siemens/sim-edge-app-mosquitto-broker-bare:0.1.2.1.3   
+    image: siemens/sim-edge-app-mosquitto-broker:0.1.4.6.65   
     
     ports:
-    - containerPort: 1889
+    - containerPort: 1883
+    - containerPort: 1884
+    volumeMounts:
+    - name: myvolume
+      mountPath: /home/mosquitto/data
     env:
     - name: "http_proxy"
       value: 'http://194.138.0.25:9400'
