@@ -316,17 +316,15 @@ spec:
     imagePullPolicy: IfNotPresent
     image: siemens/sim-edge-app-mosquitto-broker:0.1.4.6.65   
     
-   ports:
-   - containerPort: 1883
-     name: https
-     protocol: TCP
-   - containerPort: 1884
-     name: iowa
-     protocol: TCP
-
-    
-    volumeMounts:
-    - name: myvolume
-      mountPath: /home/mosquitto/data
+  ports:
+  - containerPort: 1883
+    name: https
+    protocol: TCP
+  - containerPort: 1884
+    name: iowa
+    protocol: TCP   
+  volumeMounts:
+  - name: myvolume
+    mountPath: /home/mosquitto/data
     
   
