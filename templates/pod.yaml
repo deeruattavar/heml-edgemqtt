@@ -5,8 +5,7 @@ metadata:
 spec:
   volumes:
   - name: database-volume 
-  - name: myvolume
-  {{- if .Values.persistence.enabled }} 
+  - name: myvolume 
   persistentVolumeClaim:
     claimName:  pod-with-sidecar 
   {{- else }}
