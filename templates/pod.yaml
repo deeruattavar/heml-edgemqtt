@@ -7,7 +7,7 @@ spec:
   - name: database-volume 
   - name: myvolume
   persistentVolumeClaim:
-    claimName:pod-with-sidecar    
+    claimName: pod-with-sidecar    
     emptyDir: {}
   containers:
 
