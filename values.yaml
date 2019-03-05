@@ -2,6 +2,15 @@ image:
   repository: alpine
   tag: latest
   pullPolicy: IfNotPresent
+ 
+persistence:
+  enabled: true
+  accessMode: ReadWriteOnce
+  size: 8Gi
+#  storageClass: standard
+  annotations: {}
+ 
+  
 
 restartPolicy: Never
 env:
