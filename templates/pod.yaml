@@ -6,9 +6,14 @@ spec:
   volumes:
   - name: database-volume 
   - name: myvolume
+  {{- if .Values.persistence.enabled }} 
   persistentVolumeClaim:
-    claimName: pod-with-sidecar    
+    claimName: pod-with-sidecar
+  {{- else }}
     emptyDir: {}
+  {{- end -}} 
+  
+   
   containers:
 
   # Main application container
